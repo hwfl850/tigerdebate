@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tiger Debate Camp — An intensive debate program for rising 6th–8th graders, run by the Pensacola High Debate Team." />
+  <meta property="og:title" content="Tiger Debate Camp" />
+  <meta property="og:description" content="An intensive debate program for rising 6th–8th graders out of Pensacola High School." />
+  <meta property="og:type" content="website" />
+  <title>Tiger Debate Camp</title>
+  <link rel="icon" type="image/png" href="Media/favicon-tdc.png" />
+  <link rel="apple-touch-icon" href="Media/favicon-tdc.png" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+<header>
+  <a class="logo-area" href="index.html" aria-label="Go to homepage">
+    <img class="logo-img" src="Media/favicon-tdc.png" alt="Tiger Debate Camp" />
+    <div class="logo-chapter">
+      <span class="chapter-school">Tiger Debate Camp</span>
+      <span class="chapter-tag">Pensacola High School</span>
+    </div>
+  </a>
+
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+
+  <nav id="main-nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" id="nav-home">Home</a>
+    <a href="about.html" id="nav-about">About</a>
+    <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="nav-accent">Instagram ↗</a>
+  </nav>
+</header>
+
+<main id="main-content" role="main"></main>
+
+<footer>
+  <img class="footer-logo" src="Media/favicon-tdc.png" alt="Tiger Debate Camp" />
+  <div style="font-weight:600;color:#fff;font-size:.95rem;">Pensacola High School <span style="opacity:.45;margin:0 .35rem;">·</span> Pensacola, FL</div>
+  <div class="footer-divider" aria-hidden="true"></div>
+  <a class="insta-link" href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Follow us on Instagram">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+    </svg>
+    @tigerdebatecamp
+  </a>
+  <div class="footer-tag"><strong>Argue</strong> &nbsp;·&nbsp; <strong>Persuade</strong> &nbsp;·&nbsp; <strong>Win</strong></div>
+  <a class="footer-admin" href="admin.html">Admin</a>
+</footer>
+
+<script src="assets/site.js"></script>
+<script>
+function onSiteReady() {
+  const main = document.getElementById('main-content');
+  const t = currentTheme();
+  const c = currentContent();
+
+  const eventsHtml = c.events.map(ev => `
+    <div class="event-item">
+      <div class="event-date">${escHtml(ev.date)}</div>
+      <div class="event-info">
+        <h4>${escHtml(ev.title)}</h4>
+        <p>${escHtml(ev.desc)}</p>
+      </div>
+    </div>`).join('');
+
+  main.innerHTML = `
+    <div class="hero">
+      <div class="hero-content">
+        <div class="hero-eyebrow">Pensacola High Debate Team Presents</div>
+        <h1 class="anim anim-0">Tiger <span>Debate</span> Camp</h1>
+        <p class="anim anim-1">${escHtml(c.subheadline)}</p>
+        <div class="hero-actions anim anim-2">
+          <a class="btn btn-primary" href="#section-program">The Program</a>
+          <a class="btn btn-outline" href="about.html">About Us</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-strip">
+      <div class="stat-item">
+        <div class="stat-number">23</div>
+        <div class="stat-label">2026 Enrollment</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5</div>
+        <div class="stat-label">Days of Training</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">6–8</div>
+        <div class="stat-label">Grade Levels</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">1</div>
+        <div class="stat-label">Tournament Day</div>
+      </div>
+    </div>
+
+    ${t.showAnnouncement && c.announcement && c.announcement.title ? `
+    <section class="announcement-section" id="section-announcement">
+      <div class="announcement" role="region" aria-label="Camp announcement">
+        <div class="announcement-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 11v2c0 .55.45 1 1 1h1l3.5 3.5c.63.63 1.71.18 1.71-.71V7.21c0-.89-1.08-1.34-1.71-.71L5 10H4c-.55 0-1 .45-1 1zm13.5 1c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v.5c0 .38.25.71.61.85C17.18 5.6 19 8.09 19 11s-1.82 5.4-4.39 6.42c-.36.14-.61.47-.61.85v.5c0 .63.63 1.07 1.21.85C18.66 18.36 21 14.95 21 11s-2.34-7.36-5.79-8.62c-.58-.22-1.21.22-1.21.85z"/>
+          </svg>
+        </div>
+        <div class="announcement-body">
+          ${c.announcement.badge ? `<div class="announcement-badge">${escHtml(c.announcement.badge)}</div>` : ''}
+          <h3 class="announcement-title">${escHtml(c.announcement.title)}</h3>
+          ${c.announcement.body ? `<p class="announcement-text">${escHtml(c.announcement.body)}</p>` : ''}
+        </div>
+        ${c.announcement.ctaText && c.announcement.ctaHref ? `
+          <a class="announcement-cta" href="${escHtml(c.announcement.ctaHref)}">${escHtml(c.announcement.ctaText)} &rarr;</a>
+        ` : ''}
+      </div>
+    </section>
+    ` : ''}
+
+    <section class="section" id="section-program">
+      <div class="section-inner">
+        <div class="section-eyebrow">The Program</div>
+        <h2 class="section-title">What You'll Learn</h2>
+        <div class="section-line"></div>
+        <div class="cards">
+          <div class="card">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zm.5-11H11v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg>
+            </div>
+            <h3>Argument Construction</h3>
+            <p>Build airtight arguments from the ground up. Learn claim, warrant, and impact — the pillars of every winning case.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+            </div>
+            <h3>Crossfire Mastery</h3>
+            <p>Sharpen your question-asking and on-your-feet thinking. Learn how to expose weaknesses and defend your position under pressure.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+            </div>
+            <h3>Real Tournament</h3>
+            <p>On the final day, compete in a real tournament with real awards. No experience needed — just a willingness to learn and have fun.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="section-format">
+      <div class="section-inner">
+        <div class="section-eyebrow">Tiger Debate Format</div>
+        <h2 class="section-title">The Specialized Format</h2>
+        <div class="section-line"></div>
+        <table class="format-table">
+          <thead>
+            <tr>
+              <th>Speech / Event</th>
+              <th style="text-align:right">Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="round-divider"><td colspan="2">Round 1</td></tr>
+            <tr><td>Affirmative Opening</td><td>2:00</td></tr>
+            <tr><td>Negative Opening</td><td>2:00</td></tr>
+            <tr><td>Crossfire</td><td>2:00</td></tr>
+            <tr><td>Prep Time</td><td>1:00</td></tr>
+            <tr class="round-divider"><td colspan="2">Round 2</td></tr>
+            <tr><td>Affirmative Rebuttal</td><td>1:30</td></tr>
+            <tr><td>Negative Rebuttal</td><td>1:30</td></tr>
+            <tr><td>Crossfire</td><td>1:30</td></tr>
+            <tr><td>Prep Time</td><td>1:00</td></tr>
+            <tr class="round-divider"><td colspan="2">Closing</td></tr>
+            <tr><td>Affirmative Closing</td><td>1:00</td></tr>
+            <tr><td>Negative Closing</td><td>1:00</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    ${t.showEvents && c.events.length ? `
+    <section class="section" id="section-schedule">
+      <div class="section-inner">
+        <div class="section-eyebrow">2026 Camp</div>
+        <h2 class="section-title">Daily Schedule</h2>
+        <div class="section-line"></div>
+        <div class="events-list">${eventsHtml}</div>
+      </div>
+    </section>
+    ` : ''}
+
+    <section class="section section-alt" id="section-flyer">
+      <div class="section-inner" style="text-align:center;">
+        <div class="section-eyebrow">Camp Flyer</div>
+        <h2 class="section-title">June 8–12, 2026</h2>
+        <div class="section-line" style="margin:0 auto 2rem;"></div>
+        <div class="flyer-wrap">
+          <img src="Media/flyer.png" alt="Tiger Debate Camp Flyer — June 8–12, 8:30–1:30" />
+        </div>
+        <p style="margin-top:1.25rem;color:var(--text-muted);font-size:.92rem;">
+          Text <strong style="color:var(--black);">850-380-5099</strong> for more info
+        </p>
+      </div>
+    </section>
+
+    ${t.showCta ? `
+    <section class="section" id="section-cta">
+      <div class="section-inner">
+        <div class="cta-banner">
+          <h2>Ready to Debate?</h2>
+          <p>Join Tiger Debate Camp and spend five days learning to argue smarter, think faster, and compete with confidence. No experience needed.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="about.html">Meet the Team</a>
+            <a class="btn btn-outline" href="mailto:${escHtml(c.contactEmail)}">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    ` : ''}
+  `;
+}
+</script>
+</body>
+</html>
