@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Tiger Debate Camp · Admin</title>
+  <link rel="icon" type="image/png" href="Media/favicon-tdc.png" />
+
+  <style>
+    @font-face {
+      font-family: 'Apercu Pro';
+      src: url("Fonts/Apercu Pro/Apercu Pro Light.otf") format('opentype');
+      font-weight: 300; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Apercu Pro';
+      src: url("Fonts/Apercu Pro/Apercu Pro Regular.otf") format('opentype');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Apercu Pro';
+      src: url("Fonts/Apercu Pro/Apercu Pro Medium.otf") format('opentype');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Apercu Pro';
+      src: url("Fonts/Apercu Pro/Apercu Pro Bold.otf") format('opentype');
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Gelasio';
+      src: url("Fonts/Gelasio/Gelasio-SemiBold.ttf") format('truetype');
+      font-weight: 600; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Gelasio';
+      src: url("Fonts/Gelasio/Gelasio-Bold.ttf") format('truetype');
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+
+    :root {
+      --crimson:    #b81c2e;
+      --crimson-dk: #8f1522;
+      --crimson-lt: #d42338;
+      --black:      #111111;
+      --ink:        #1a1a1a;
+      --white:      #ffffff;
+      --bg:         #ffffff;
+      --surface:    #f8f4f4;
+      --text:       var(--ink);
+      --text-muted: #5a5050;
+      --border:     #e0d0d0;
+      --radius:     12px;
+      --radius-pill: 999px;
+      --font-body:    'Apercu Pro', 'Helvetica Neue', Arial, sans-serif;
+      --font-display: 'Gelasio', Georgia, 'Times New Roman', serif;
+      --shadow:     0 8px 24px rgba(184,28,46,0.08);
+      --shadow-lg:  0 16px 40px rgba(184,28,46,0.14);
+      --transition: 0.25s cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--surface);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      letter-spacing: -0.005em;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .topbar {
+      background: var(--black);
+      border-bottom: 3px solid var(--crimson);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar .brand {
+      display: flex; align-items: center; gap: .75rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--white);
+      font-size: 1.05rem;
+      text-decoration: none;
+    }
+    .topbar .brand img { width: 32px; height: 32px; }
+    .topbar .top-links { display: flex; gap: 1.25rem; align-items: center; }
+    .topbar a.back,
+    .topbar a.preview {
+      font-size: .85rem;
+      color: rgba(255,255,255,.55);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color var(--transition);
+    }
+    .topbar a.back:hover,
+    .topbar a.preview:hover { color: var(--white); }
+
+    .admin-page {
+      flex: 1;
+      max-width: 880px;
+      width: 100%;
+      margin: 2.5rem auto 7rem;
+      padding: 0 1.25rem;
+    }
+
+    .page-head { margin-bottom: 1.75rem; }
+    .page-head .eyebrow {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: .4rem;
+    }
+    .page-head h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.65rem, 2.6vw, 2.1rem);
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      margin-bottom: .35rem;
+    }
+    .page-head p {
+      color: var(--text-muted);
+      font-size: .95rem;
+      line-height: 1.55;
+      max-width: 640px;
+    }
+
+    .card {
+      position: relative;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--crimson-dk) 0%, var(--crimson) 50%, var(--crimson-lt) 100%);
+    }
+    .card-head {
+      padding: 1.25rem 1.5rem .75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .card-head h2 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -0.01em;
+    }
+    .card-head .hint { font-size: .78rem; color: var(--text-muted); }
+    .card-body { padding: .25rem 1.5rem 1.5rem; }
+
+    .field { margin-bottom: 1rem; }
+    .field label {
+      display: block;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--black);
+      letter-spacing: .02em;
+      margin-bottom: .35rem;
+    }
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="password"],
+    .field input[type="url"],
+    .field textarea {
+      width: 100%;
+      padding: .7rem .9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: .95rem;
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .field textarea { resize: vertical; min-height: 88px; line-height: 1.5; }
+    .field input:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--crimson);
+      box-shadow: 0 0 0 3px rgba(184,28,46,.15);
+    }
+    .field-row { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
+    .field-help { font-size: .76rem; color: var(--text-muted); margin-top: .35rem; line-height: 1.45; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      padding: .7rem 1.25rem;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: .9rem;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), color var(--transition);
+    }
+    .btn:hover:not(:disabled) { transform: translateY(-1px); }
+    .btn:disabled { opacity: .55; cursor: not-allowed; }
+    .btn-primary {
+      background: var(--crimson);
+      color: var(--white);
+      box-shadow: 0 6px 18px rgba(184,28,46,.32);
+    }
+    .btn-primary:hover:not(:disabled) { background: var(--crimson-lt); }
+    .btn-navy {
+      background: var(--black);
+      color: var(--white);
+    }
+    .btn-navy:hover:not(:disabled) { background: #2a2a2a; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--black);
+      border: 1.5px solid var(--border);
+    }
+    .btn-ghost:hover:not(:disabled) { border-color: var(--crimson); color: var(--crimson); }
+    .btn-danger {
+      background: transparent;
+      color: #c62828;
+      border: 1.5px solid #ffcdd2;
+      padding: .4rem .85rem;
+      font-size: .8rem;
+    }
+    .btn-danger:hover:not(:disabled) { background: #fff0f0; }
+    .btn-sm { padding: .45rem .9rem; font-size: .82rem; }
+
+    .row-list { display: flex; flex-direction: column; gap: .85rem; }
+    .row-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      background: var(--surface);
+      display: grid;
+      gap: .85rem;
+    }
+    .row-item.event-row { grid-template-columns: 1fr auto; align-items: start; }
+    @media (max-width: 560px) {
+      .row-item.event-row { grid-template-columns: 1fr; }
+      .row-item.event-row .row-actions { grid-column: 1 / -1; justify-self: stretch; }
+    }
+
+    .row-fields { display: grid; gap: .6rem; }
+    .row-fields-3 { grid-template-columns: 110px 1fr 1fr; }
+    @media (max-width: 560px) { .row-fields-3 { grid-template-columns: 1fr; } }
+    .row-fields input, .row-fields textarea {
+      padding: .55rem .8rem;
+      font-size: .9rem;
+      border-radius: 8px;
+      width: 100%;
+      border: 1.5px solid var(--border);
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .row-fields input:focus, .row-fields textarea:focus {
+      outline: none;
+      border-color: var(--crimson);
+      box-shadow: 0 0 0 3px rgba(184,28,46,.15);
+    }
+    .row-actions { display: flex; flex-direction: column; gap: .35rem; align-items: stretch; min-width: 130px; }
+    .row-actions .reorder { display: flex; gap: .3rem; }
+    .row-actions .reorder button {
+      flex: 1;
+      padding: .35rem .5rem;
+      font-size: .9rem;
+      line-height: 1;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--black);
+      cursor: pointer;
+      transition: border-color var(--transition), color var(--transition);
+      font-family: var(--font-body);
+    }
+    .row-actions .reorder button:hover:not(:disabled) { border-color: var(--crimson); color: var(--crimson); }
+    .row-actions .reorder button:disabled { opacity: .35; cursor: not-allowed; }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .65rem 0;
+      gap: 1rem;
+    }
+    .toggle-row + .toggle-row { border-top: 1px solid var(--border); }
+    .toggle-row .toggle-label { font-weight: 600; color: var(--black); font-size: .92rem; }
+    .toggle-row .toggle-label small {
+      display: block; font-weight: 400; font-size: .76rem; color: var(--text-muted); margin-top: .15rem;
+    }
+    .switch {
+      position: relative; display: inline-block;
+      width: 44px; height: 24px; flex: 0 0 44px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer;
+      inset: 0; background: #d6c0c0;
+      border-radius: 24px; transition: background var(--transition);
+    }
+    .slider::before {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+      left: 3px; top: 3px;
+      background: var(--white);
+      border-radius: 50%;
+      transition: transform var(--transition);
+      box-shadow: 0 2px 4px rgba(0,0,0,.18);
+    }
+    .switch input:checked + .slider { background: var(--crimson); }
+    .switch input:checked + .slider::before { transform: translateX(20px); }
+    .switch input:focus + .slider { box-shadow: 0 0 0 3px rgba(184,28,46,.2); }
+
+    .alert {
+      border-radius: 10px; padding: .7rem 1rem; font-size: .88rem;
+      line-height: 1.5; margin-bottom: 1rem; display: none;
+    }
+    .alert.show { display: block; }
+    .alert.error   { background: #fff0f0; border: 1px solid #ffcdd2; color: #c62828; }
+    .alert.success { background: #ecf8ef; border: 1px solid #b6dfbf; color: #1f6f33; }
+    .alert.info    { background: #fff5f5; border: 1px solid var(--border); color: var(--crimson-dk); }
+    .alert a { color: inherit; font-weight: 600; }
+
+    .save-bar {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: .85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      box-shadow: 0 -10px 30px rgba(184,28,46,.08);
+      z-index: 40;
+    }
+    .save-bar .status { font-size: .85rem; color: var(--text-muted); }
+    .save-bar .status.dirty { color: #c77a00; font-weight: 600; }
+    .save-bar .status.ok    { color: #1f6f33; font-weight: 600; }
+    .save-bar .status.err   { color: #c62828; font-weight: 600; }
+
+    .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2.5px solid rgba(255,255,255,.35);
+      border-top-color: var(--white);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .empty {
+      text-align: center; color: var(--text-muted); font-size: .85rem;
+      padding: 1rem; border: 1px dashed var(--border);
+      border-radius: 12px; background: var(--surface);
+    }
+
+    .gate {
+      position: fixed; inset: 0; background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem; z-index: 100;
+    }
+    .gate-card {
+      width: 100%; max-width: 420px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 16px; box-shadow: var(--shadow-lg);
+      padding: 2rem 1.75rem 1.75rem; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .gate-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--crimson-dk) 0%, var(--crimson) 50%, var(--crimson-lt) 100%);
+    }
+    .gate-logo {
+      width: 64px; height: 64px;
+      margin: 0 auto 1rem;
+    }
+    .gate-logo img { width: 100%; height: 100%; object-fit: contain; }
+    .gate-card h2 {
+      font-family: var(--font-display); font-size: 1.35rem;
+      font-weight: 700; color: var(--black); margin-bottom: .35rem;
+    }
+    .gate-card p { color: var(--text-muted); font-size: .88rem; line-height: 1.55; margin-bottom: 1.25rem; }
+    .gate-error {
+      display: none; background: #fff0f0; border: 1px solid #ffcdd2;
+      color: #c62828; border-radius: 10px; padding: .55rem .8rem;
+      font-size: .82rem; margin-bottom: .85rem; text-align: left;
+    }
+    .gate-error.show { display: block; }
+    .gate-card input[type="password"] {
+      width: 100%; padding: .75rem .95rem; border: 1.5px solid var(--border);
+      border-radius: 10px; font-size: .95rem; font-family: var(--font-body);
+      color: var(--text); background: var(--bg); margin-bottom: .85rem;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .gate-card input[type="password"]:focus {
+      outline: none; border-color: var(--crimson);
+      box-shadow: 0 0 0 3px rgba(184,28,46,.15);
+    }
+    .gate-card .btn { width: 100%; }
+    .gate-back {
+      display: inline-block; margin-top: 1rem;
+      font-size: .8rem; color: var(--text-muted); text-decoration: none;
+    }
+    .gate-back:hover { color: var(--black); }
+
+    body.locked .topbar,
+    body.locked .admin-page,
+    body.locked .save-bar { display: none !important; }
+  </style>
+</head>
+<body class="locked">
+
+  <!-- ── Password Gate ── -->
+  <div id="admin-gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+    <div class="gate-card">
+      <div class="gate-logo">
+        <img src="Media/favicon-tdc.png" alt="Tiger Debate Camp" />
+      </div>
+      <h2 id="gate-title">Admin Access</h2>
+      <p>Enter the admin password to edit site content.</p>
+      <div id="gate-error" class="gate-error" role="alert"></div>
+      <input type="password" id="gate-input" placeholder="Admin password" autocomplete="current-password" />
+      <button type="button" class="btn btn-primary" id="gate-submit">
+        <span id="gate-submit-text">Unlock</span>
+      </button>
+      <a class="gate-back" href="index.html">&larr; Back to site</a>
+    </div>
+  </div>
+
+  <!-- ── Top bar ── -->
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <img src="Media/favicon-tdc.png" alt="TDC" />
+      <span>TDC Admin</span>
+    </a>
+    <div class="top-links">
+      <a class="preview" href="index.html" target="_blank" rel="noopener">Preview site ↗</a>
+      <a class="back" href="index.html">&larr; Back to site</a>
+    </div>
+  </header>
+
+  <main class="admin-page">
+    <div class="page-head">
+      <div class="eyebrow">Site Dashboard</div>
+      <h1>Content Editor</h1>
+      <p>Edit the hero text, announcement, events schedule, and visibility toggles. Changes push to GitHub via Cloudflare Worker and go live in about a minute.</p>
+    </div>
+
+    <div id="alert" class="alert" role="alert"></div>
+
+    <!-- Hero & Contact -->
+    <section class="card">
+      <div class="card-head">
+        <h2>Hero &amp; Contact</h2>
+        <span class="hint">Homepage headline and contact email</span>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label for="h-headline">Headline</label>
+          <input type="text" id="h-headline" placeholder="Tiger Debate Camp" />
+        </div>
+        <div class="field">
+          <label for="h-subheadline">Subheadline</label>
+          <textarea id="h-subheadline" placeholder="An intensive debate program for rising 6th–8th graders…"></textarea>
+        </div>
+        <div class="field">
+          <label for="h-contactEmail">Contact email</label>
+          <input type="email" id="h-contactEmail" placeholder="tigerdebatecamp@gmail.com" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Announcement -->
+    <section class="card">
+      <div class="card-head">
+        <h2>Announcement Banner</h2>
+        <label class="switch" title="Show on homepage">
+          <input type="checkbox" id="t-showAnnouncement" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label for="a-badge">Badge</label>
+          <input type="text" id="a-badge" placeholder="2026 Enrollment" />
+        </div>
+        <div class="field">
+          <label for="a-title">Title</label>
+          <input type="text" id="a-title" placeholder="Applications Open — June 8–12" />
+        </div>
+        <div class="field">
+          <label for="a-body">Body</label>
+          <textarea id="a-body" placeholder="Short description…"></textarea>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="a-ctaText">CTA text</label>
+            <input type="text" id="a-ctaText" placeholder="Learn More" />
+          </div>
+          <div class="field">
+            <label for="a-ctaHref">CTA link</label>
+            <input type="text" id="a-ctaHref" placeholder="#section-program" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Events Schedule -->
+    <section class="card">
+      <div class="card-head">
+        <h2>Schedule / Events</h2>
+        <label class="switch" title="Show schedule section">
+          <input type="checkbox" id="t-showEvents" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="card-body">
+        <div class="row-list" id="events-list"></div>
+        <button type="button" class="btn btn-ghost btn-sm" id="add-event" style="margin-top:.75rem;">+ Add event</button>
+      </div>
+    </section>
+
+    <!-- Visibility Toggles -->
+    <section class="card">
+      <div class="card-head">
+        <h2>Section Visibility</h2>
+        <span class="hint">Show or hide page sections</span>
+      </div>
+      <div class="card-body">
+        <div class="toggle-row">
+          <div class="toggle-label">
+            Call-to-Action Banner
+            <small>Bottom CTA section on the homepage</small>
+          </div>
+          <label class="switch"><input type="checkbox" id="t-showCta" /><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-label">
+            Announcement Banner
+            <small>Top announcement on homepage</small>
+          </div>
+          <label class="switch"><input type="checkbox" id="t-showAnnouncement2" /><span class="slider"></span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cloudflare Worker Config -->
+    <section class="card">
+      <div class="card-head">
+        <h2>Cloudflare Worker Config</h2>
+        <span class="hint">GitHub push settings — stored in your browser only</span>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label for="cfg-workerUrl">Worker URL</label>
+          <input type="url" id="cfg-workerUrl" placeholder="https://tdc-admin.YOUR-SUBDOMAIN.workers.dev" />
+          <p class="field-help">The deployed Cloudflare Worker endpoint that accepts POST requests and pushes to GitHub.</p>
+        </div>
+        <div class="field">
+          <label for="cfg-workerSecret">Worker Secret</label>
+          <input type="password" id="cfg-workerSecret" placeholder="Shared secret configured in your Worker" />
+          <p class="field-help">Matches the <code>ADMIN_SECRET</code> environment variable set in your Cloudflare Worker.</p>
+        </div>
+        <button type="button" class="btn btn-navy btn-sm" id="save-config">Save Config</button>
+        <p class="field-help" style="margin-top:.5rem;">Config is saved to <code>localStorage</code> in your browser only — never sent to GitHub.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="save-bar">
+    <span class="status" id="save-status">No changes</span>
+    <button type="button" class="btn btn-primary" id="save-btn" disabled>
+      <span id="save-btn-text">Save &amp; Push to GitHub</span>
+    </button>
+  </div>
+
+  <script>
+    // ── Config (stored in localStorage) ──────────────────────────────────────
+    const CFG_KEY = 'tdc_admin_config';
+    const CONTENT_PATH = 'src/data/content.json';
+    const REPO_BRANCH  = 'main';
+
+    function loadConfig() {
+      try { return JSON.parse(localStorage.getItem(CFG_KEY) || '{}'); } catch (_) { return {}; }
+    }
+    function saveConfig(cfg) { localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
+
+    // ── Content defaults ──────────────────────────────────────────────────────
+    const CONTENT_DEFAULTS = {
+      headline: 'Tiger Debate Camp',
+      subheadline: 'An intensive debate program for rising 6th–8th graders, run out of Pensacola High School by the Pensacola High Debate Team.',
+      contactEmail: 'tigerdebatecamp@gmail.com',
+      announcement: { badge: '2026 Enrollment', title: '', body: '', ctaText: '', ctaHref: '' },
+      events: [],
+    };
+    const THEME_DEFAULTS = { showEvents: true, showCta: true, showAnnouncement: true };
+
+    function $(id) { return document.getElementById(id); }
+
+    const state = {
+      content: JSON.parse(JSON.stringify(CONTENT_DEFAULTS)),
+      theme:   JSON.parse(JSON.stringify(THEME_DEFAULTS)),
+    };
+
+    // ── Dirty tracking ────────────────────────────────────────────────────────
+    function markDirty() {
+      $('save-status').textContent = 'Unsaved changes';
+      $('save-status').className = 'status dirty';
+      $('save-btn').disabled = false;
+    }
+    function markClean(msg) {
+      $('save-status').textContent = msg || 'Saved';
+      $('save-status').className = 'status ok';
+      $('save-btn').disabled = true;
+    }
+    function setSaving(on) {
+      $('save-btn').disabled = on;
+      $('save-btn-text').innerHTML = on
+        ? '<span class="spinner"></span> Pushing…'
+        : 'Save &amp; Push to GitHub';
+    }
+
+    // ── Alerts ────────────────────────────────────────────────────────────────
+    function showAlert(type, html) {
+      const el = $('alert');
+      el.className = `alert ${type} show`;
+      el.innerHTML = html;
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    function clearAlert() {
+      const el = $('alert');
+      el.className = 'alert';
+      el.innerHTML = '';
+    }
+
+    // ── Password gate ─────────────────────────────────────────────────────────
+    function handleGateSubmit() {
+      const input = $('gate-input');
+      const errEl = $('gate-error');
+      const stored = loadConfig().adminPassword || '';
+      const val = input.value;
+      if (!stored) {
+        // First time — accept any non-empty password and store it
+        if (!val.trim()) { errEl.textContent = 'Enter a password to set up admin access.'; errEl.className = 'gate-error show'; return; }
+        const cfg = loadConfig();
+        cfg.adminPassword = val;
+        saveConfig(cfg);
+        unlockAdmin();
+      } else {
+        if (val === stored) { unlockAdmin(); }
+        else { errEl.textContent = 'Incorrect password.'; errEl.className = 'gate-error show'; input.value = ''; input.focus(); }
+      }
+    }
+    function unlockAdmin() {
+      document.body.classList.remove('locked');
+      $('admin-gate').remove();
+      initAdmin();
+    }
+
+    // ── Load existing content from server ─────────────────────────────────────
+    async function fetchServerContent() {
+      try {
+        const res = await fetch(`src/data/content.json?_=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(4000) });
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.content) Object.assign(state.content, data.content);
+          if (data?.theme)   Object.assign(state.theme,   data.theme);
+        }
+      } catch (_) {}
+    }
+
+    // ── Render fields ─────────────────────────────────────────────────────────
+    function renderHeroFields() {
+      $('h-headline').value    = state.content.headline    || '';
+      $('h-subheadline').value = state.content.subheadline || '';
+      $('h-contactEmail').value = state.content.contactEmail || '';
+    }
+    function renderAnnouncementFields() {
+      const a = state.content.announcement || {};
+      $('a-badge').value   = a.badge   || '';
+      $('a-title').value   = a.title   || '';
+      $('a-body').value    = a.body    || '';
+      $('a-ctaText').value = a.ctaText || '';
+      $('a-ctaHref').value = a.ctaHref || '';
+    }
+    function renderToggles() {
+      $('t-showAnnouncement').checked  = !!state.theme.showAnnouncement;
+      $('t-showAnnouncement2').checked = !!state.theme.showAnnouncement;
+      $('t-showEvents').checked        = !!state.theme.showEvents;
+      $('t-showCta').checked           = !!state.theme.showCta;
+    }
+    function renderEvents() {
+      const list = $('events-list');
+      list.innerHTML = '';
+      if (!state.content.events.length) {
+        list.innerHTML = `<div class="empty">No events yet. Click <strong>+ Add event</strong>.</div>`;
+        return;
+      }
+      const last = state.content.events.length - 1;
+      state.content.events.forEach((ev, idx) => {
+        const row = document.createElement('div');
+        row.className = 'row-item event-row';
+        row.dataset.idx = String(idx);
+        row.innerHTML = `
+          <div class="row-fields row-fields-3">
+            <input type="text" data-k="date"  placeholder="JUN 8"             value="${escAttr(ev.date  || '')}" />
+            <input type="text" data-k="title" placeholder="Event title"        value="${escAttr(ev.title || '')}" />
+            <input type="text" data-k="desc"  placeholder="Short description"  value="${escAttr(ev.desc  || '')}" />
+          </div>
+          <div class="row-actions">
+            <div class="reorder">
+              <button type="button" data-move="up"   ${idx === 0    ? 'disabled' : ''}>↑</button>
+              <button type="button" data-move="down" ${idx === last ? 'disabled' : ''}>↓</button>
+            </div>
+            <button type="button" class="btn btn-danger" data-remove>Remove</button>
+          </div>`;
+        list.appendChild(row);
+      });
+    }
+
+    function escAttr(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    function swap(arr, i, j) {
+      if (i < 0 || j < 0 || i >= arr.length || j >= arr.length) return false;
+      [arr[i], arr[j]] = [arr[j], arr[i]]; return true;
+    }
+
+    // ── Worker push ───────────────────────────────────────────────────────────
+    function b64encode(str) {
+      return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    async function workerPush(path, base64Content, message) {
+      const cfg = loadConfig();
+      if (!cfg.workerUrl) throw new Error('Worker URL not configured. Set it in the Cloudflare Worker Config section below.');
+      const res = await fetch(cfg.workerUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Secret': cfg.workerSecret || '',
+        },
+        body: JSON.stringify({ path, content: base64Content, message, branch: REPO_BRANCH }),
+      });
+      if (!res.ok) {
+        const body = await res.text().catch(() => '');
+        throw new Error(`Worker returned ${res.status}: ${body || res.statusText}`);
+      }
+    }
+
+    // ── Wire fields ───────────────────────────────────────────────────────────
+    function wireHero() {
+      const map = { 'h-headline':'headline', 'h-subheadline':'subheadline', 'h-contactEmail':'contactEmail' };
+      Object.entries(map).forEach(([id, key]) => {
+        $(id).addEventListener('input', (e) => { state.content[key] = e.target.value; markDirty(); });
+      });
+    }
+    function wireAnnouncement() {
+      const map = { 'a-badge':'badge', 'a-title':'title', 'a-body':'body', 'a-ctaText':'ctaText', 'a-ctaHref':'ctaHref' };
+      Object.entries(map).forEach(([id, key]) => {
+        $(id).addEventListener('input', (e) => { state.content.announcement[key] = e.target.value; markDirty(); });
+      });
+    }
+    function wireToggles() {
+      const map = {
+        't-showAnnouncement': 'showAnnouncement',
+        't-showAnnouncement2': 'showAnnouncement',
+        't-showEvents': 'showEvents',
+        't-showCta': 'showCta',
+      };
+      Object.entries(map).forEach(([id, key]) => {
+        $(id).addEventListener('change', (e) => { state.theme[key] = e.target.checked; markDirty(); });
+      });
+    }
+    function wireEventsList() {
+      const list = $('events-list');
+      list.addEventListener('input', (e) => {
+        const row = e.target.closest('.row-item'); if (!row) return;
+        const idx = Number(row.dataset.idx);
+        const key = e.target.dataset.k;
+        if (key && state.content.events[idx]) { state.content.events[idx][key] = e.target.value; markDirty(); }
+      });
+      list.addEventListener('click', (e) => {
+        const row = e.target.closest('.row-item'); if (!row) return;
+        const idx = Number(row.dataset.idx);
+        if (e.target.matches('[data-remove]')) {
+          if (confirm(`Remove "${state.content.events[idx]?.title || 'this event'}"?`)) {
+            state.content.events.splice(idx, 1); markDirty(); renderEvents();
+          }
+        } else if (e.target.matches('[data-move]')) {
+          const dir = e.target.dataset.move === 'up' ? -1 : 1;
+          if (swap(state.content.events, idx, idx + dir)) { markDirty(); renderEvents(); }
+        }
+      });
+      $('add-event').addEventListener('click', () => {
+        state.content.events.push({ date: '', title: '', desc: '' }); markDirty(); renderEvents();
+        const rows = list.querySelectorAll('.row-item');
+        rows[rows.length - 1]?.querySelector('input[data-k="date"]')?.focus();
+      });
+    }
+    function wireConfig() {
+      const cfg = loadConfig();
+      $('cfg-workerUrl').value    = cfg.workerUrl    || '';
+      $('cfg-workerSecret').value = cfg.workerSecret || '';
+      $('save-config').addEventListener('click', () => {
+        const c = loadConfig();
+        c.workerUrl    = $('cfg-workerUrl').value.trim();
+        c.workerSecret = $('cfg-workerSecret').value.trim();
+        saveConfig(c);
+        showAlert('success', 'Worker config saved to browser storage.');
+      });
+    }
+
+    async function saveAll() {
+      clearAlert();
+      state.content.events = state.content.events.filter(e => e.date || e.title || e.desc);
+      const payload = JSON.stringify({ content: state.content, theme: state.theme }, null, 2) + '\n';
+      const base64  = b64encode(payload);
+      const message = `chore(admin): update site content (${new Date().toISOString().slice(0,10)})`;
+      setSaving(true);
+      try {
+        await workerPush(CONTENT_PATH, base64, message);
+        markClean('Saved. GitHub Pages rebuilding…');
+        showAlert('success', `Pushed <code>${CONTENT_PATH}</code> to <strong>${REPO_BRANCH}</strong>. Live site updates in ~1 minute.`);
+        renderEvents();
+      } catch (err) {
+        console.error(err);
+        $('save-status').textContent = 'Save failed';
+        $('save-status').className = 'status err';
+        showAlert('error', `Save failed: ${err.message}`);
+      } finally {
+        setSaving(false);
+      }
+    }
+
+    async function initAdmin() {
+      await fetchServerContent();
+      renderHeroFields();
+      renderAnnouncementFields();
+      renderToggles();
+      renderEvents();
+      wireHero();
+      wireAnnouncement();
+      wireToggles();
+      wireEventsList();
+      wireConfig();
+      $('save-btn').addEventListener('click', saveAll);
+    }
+
+    // ── Boot gate ─────────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      const gateInput  = $('gate-input');
+      const gateSubmit = $('gate-submit');
+      gateSubmit.addEventListener('click', handleGateSubmit);
+      gateInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleGateSubmit(); });
+      gateInput.focus();
+    });
+  </script>
+</body>
+</html>
