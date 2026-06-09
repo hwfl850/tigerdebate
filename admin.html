@@ -73,6 +73,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* ── Top bar ── */
     .topbar {
       background: var(--black);
       border-bottom: 3px solid var(--crimson);
@@ -105,6 +106,7 @@
     .topbar a.back:hover,
     .topbar a.preview:hover { color: var(--white); }
 
+    /* ── Layout ── */
     .admin-page {
       flex: 1;
       max-width: 880px;
@@ -139,39 +141,139 @@
       max-width: 640px;
     }
 
-    .card {
-      position: relative;
+    /* ── Page quick-nav tabs ── */
+    .page-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-bottom: 1.5rem;
+      position: sticky;
+      top: 70px;
+      z-index: 30;
+      padding: .6rem;
+      background: rgba(248,244,244,.9);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+    }
+    .page-tab {
+      padding: .5rem 1.05rem;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: transparent;
+      color: var(--black);
+      font-weight: 600;
+      font-size: .85rem;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: background var(--transition), color var(--transition);
+      white-space: nowrap;
+    }
+    .page-tab:hover { background: rgba(184,28,46,.08); }
+    .page-tab.active { background: var(--crimson); color: var(--white); }
+    @media (max-width: 560px) {
+      .page-tabs { flex-wrap: nowrap; overflow-x: auto; border-radius: 14px; }
+      .page-tab { font-size: .8rem; padding: .45rem .85rem; }
+    }
+
+    /* ── Page accordion panels ── */
+    .page-accordion { display: flex; flex-direction: column; gap: 1.1rem; }
+    .page-panel {
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 16px;
       box-shadow: var(--shadow);
-      margin-bottom: 1.5rem;
       overflow: hidden;
+      scroll-margin-top: 140px;
+      transition: box-shadow var(--transition);
     }
-    .card::before {
+    .page-panel.open { box-shadow: var(--shadow-lg); }
+    .page-panel-head {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.15rem 1.4rem;
+      background: var(--bg);
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--font-display);
+      transition: background var(--transition);
+      position: relative;
+    }
+    .page-panel-head::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 3px;
       background: linear-gradient(90deg, var(--crimson-dk) 0%, var(--crimson) 50%, var(--crimson-lt) 100%);
+      border-radius: 16px 16px 0 0;
+      opacity: 0;
+      transition: opacity var(--transition);
     }
-    .card-head {
-      padding: 1.25rem 1.5rem .75rem;
+    .page-panel.open .page-panel-head::before { opacity: 1; }
+    .page-panel-head:hover { background: var(--surface); }
+    .page-panel-icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--crimson-dk) 0%, var(--crimson) 100%);
+      color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      flex: 0 0 42px;
+    }
+    .page-panel-titles { flex: 1; min-width: 0; }
+    .page-panel-titles h2 {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+    .page-panel-titles p {
+      font-size: .8rem;
+      color: var(--text-muted);
+      margin-top: .15rem;
+      font-family: var(--font-body);
+      font-weight: 400;
+    }
+    .page-panel-chevron {
+      flex: 0 0 auto;
+      color: var(--text-muted);
+      transition: transform var(--transition);
+    }
+    .page-panel.open .page-panel-chevron { transform: rotate(180deg); }
+    .page-panel-body { display: none; padding: 0 1.4rem 1.5rem; }
+    .page-panel.open .page-panel-body { display: block; }
+
+    /* ── Sub-cards inside a panel ── */
+    .subcard {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.15rem 1.2rem;
+      margin-top: 1.1rem;
+      background: var(--surface);
+    }
+    .subcard:first-child { margin-top: 1.3rem; }
+    .subcard-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
+      margin-bottom: 1rem;
     }
-    .card-head h2 {
+    .subcard-head h3 {
       font-family: var(--font-display);
-      font-size: 1.15rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--black);
       letter-spacing: -0.01em;
     }
-    .card-head .hint { font-size: .78rem; color: var(--text-muted); }
-    .card-body { padding: .25rem 1.5rem 1.5rem; }
+    .subcard-head .hint { font-size: .74rem; color: var(--text-muted); }
+    .subcard .field:last-child { margin-bottom: 0; }
 
+    /* ── Form fields ── */
     .field { margin-bottom: 1rem; }
     .field label {
       display: block;
@@ -206,6 +308,7 @@
     @media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
     .field-help { font-size: .76rem; color: var(--text-muted); margin-top: .35rem; line-height: 1.45; }
 
+    /* ── Buttons ── */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -250,12 +353,13 @@
     .btn-danger:hover:not(:disabled) { background: #fff0f0; }
     .btn-sm { padding: .45rem .9rem; font-size: .82rem; }
 
+    /* ── Dynamic rows ── */
     .row-list { display: flex; flex-direction: column; gap: .85rem; }
     .row-item {
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1rem;
-      background: var(--surface);
+      background: var(--bg);
       display: grid;
       gap: .85rem;
     }
@@ -264,7 +368,6 @@
       .row-item.event-row { grid-template-columns: 1fr; }
       .row-item.event-row .row-actions { grid-column: 1 / -1; justify-self: stretch; }
     }
-
     .row-fields { display: grid; gap: .6rem; }
     .row-fields-3 { grid-template-columns: 110px 1fr 1fr; }
     @media (max-width: 560px) { .row-fields-3 { grid-template-columns: 1fr; } }
@@ -302,6 +405,7 @@
     .row-actions .reorder button:hover:not(:disabled) { border-color: var(--crimson); color: var(--crimson); }
     .row-actions .reorder button:disabled { opacity: .35; cursor: not-allowed; }
 
+    /* ── Toggle switch ── */
     .toggle-row {
       display: flex;
       align-items: center;
@@ -338,6 +442,7 @@
     .switch input:checked + .slider::before { transform: translateX(20px); }
     .switch input:focus + .slider { box-shadow: 0 0 0 3px rgba(184,28,46,.2); }
 
+    /* ── Alerts ── */
     .alert {
       border-radius: 10px; padding: .7rem 1rem; font-size: .88rem;
       line-height: 1.5; margin-bottom: 1rem; display: none;
@@ -348,6 +453,7 @@
     .alert.info    { background: #fff5f5; border: 1px solid var(--border); color: var(--crimson-dk); }
     .alert a { color: inherit; font-weight: 600; }
 
+    /* ── Sticky save bar ── */
     .save-bar {
       position: fixed;
       left: 0; right: 0; bottom: 0;
@@ -382,6 +488,7 @@
       border-radius: 12px; background: var(--surface);
     }
 
+    /* ── Password gate ── */
     .gate {
       position: fixed; inset: 0; background: var(--surface);
       display: flex; align-items: center; justify-content: center;
@@ -399,10 +506,7 @@
       position: absolute; top: 0; left: 0; right: 0; height: 3px;
       background: linear-gradient(90deg, var(--crimson-dk) 0%, var(--crimson) 50%, var(--crimson-lt) 100%);
     }
-    .gate-logo {
-      width: 64px; height: 64px;
-      margin: 0 auto 1rem;
-    }
+    .gate-logo { width: 64px; height: 64px; margin: 0 auto 1rem; }
     .gate-logo img { width: 100%; height: 100%; object-fit: contain; }
     .gate-card h2 {
       font-family: var(--font-display); font-size: 1.35rem;
@@ -464,7 +568,7 @@
     </a>
     <div class="top-links">
       <a class="preview" href="index.html" target="_blank" rel="noopener">Preview site ↗</a>
-      <a class="back" href="index.html">&larr; Back to site</a>
+      <a class="back" href="index.html">&larr; Back</a>
     </div>
   </header>
 
@@ -472,128 +576,244 @@
     <div class="page-head">
       <div class="eyebrow">Site Dashboard</div>
       <h1>Content Editor</h1>
-      <p>Edit the hero text, announcement, events schedule, and visibility toggles. Changes push to GitHub via Cloudflare Worker and go live in about a minute.</p>
+      <p>Pick a page below to edit its content. Changes push to GitHub via Cloudflare Worker and go live in about a minute.</p>
     </div>
 
     <div id="alert" class="alert" role="alert"></div>
 
-    <!-- Hero & Contact -->
-    <section class="card">
-      <div class="card-head">
-        <h2>Hero &amp; Contact</h2>
-        <span class="hint">Homepage headline and contact email</span>
-      </div>
-      <div class="card-body">
-        <div class="field">
-          <label for="h-headline">Headline</label>
-          <input type="text" id="h-headline" placeholder="Tiger Debate Camp" />
-        </div>
-        <div class="field">
-          <label for="h-subheadline">Subheadline</label>
-          <textarea id="h-subheadline" placeholder="An intensive debate program for rising 6th–8th graders…"></textarea>
-        </div>
-        <div class="field">
-          <label for="h-contactEmail">Contact email</label>
-          <input type="email" id="h-contactEmail" placeholder="tigerdebatecamp@gmail.com" />
-        </div>
-      </div>
-    </section>
+    <!-- ── Page quick-nav tabs ── -->
+    <nav class="page-tabs" id="page-tabs" aria-label="Jump to page editor">
+      <button type="button" class="page-tab active" data-tab="panel-home">Edit Homepage</button>
+      <button type="button" class="page-tab" data-tab="panel-about">Edit About Page</button>
+      <button type="button" class="page-tab" data-tab="panel-site">Site-wide</button>
+    </nav>
 
-    <!-- Announcement -->
-    <section class="card">
-      <div class="card-head">
-        <h2>Announcement Banner</h2>
-        <label class="switch" title="Show on homepage">
-          <input type="checkbox" id="t-showAnnouncement" />
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div class="card-body">
-        <div class="field">
-          <label for="a-badge">Badge</label>
-          <input type="text" id="a-badge" placeholder="2026 Enrollment" />
-        </div>
-        <div class="field">
-          <label for="a-title">Title</label>
-          <input type="text" id="a-title" placeholder="Applications Open — June 8–12" />
-        </div>
-        <div class="field">
-          <label for="a-body">Body</label>
-          <textarea id="a-body" placeholder="Short description…"></textarea>
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label for="a-ctaText">CTA text</label>
-            <input type="text" id="a-ctaText" placeholder="Learn More" />
-          </div>
-          <div class="field">
-            <label for="a-ctaHref">CTA link</label>
-            <input type="text" id="a-ctaHref" placeholder="#section-program" />
-          </div>
-        </div>
-      </div>
-    </section>
+    <div class="page-accordion" id="page-accordion">
 
-    <!-- Events Schedule -->
-    <section class="card">
-      <div class="card-head">
-        <h2>Schedule / Events</h2>
-        <label class="switch" title="Show schedule section">
-          <input type="checkbox" id="t-showEvents" />
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div class="card-body">
-        <div class="row-list" id="events-list"></div>
-        <button type="button" class="btn btn-ghost btn-sm" id="add-event" style="margin-top:.75rem;">+ Add event</button>
-      </div>
-    </section>
+      <!-- ════════════ EDIT HOMEPAGE ════════════ -->
+      <section class="page-panel open" id="panel-home">
+        <button type="button" class="page-panel-head" aria-expanded="true" aria-controls="panel-home-body">
+          <span class="page-panel-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          </span>
+          <span class="page-panel-titles">
+            <h2>Edit Homepage</h2>
+            <p>Hero text, announcement banner, and daily schedule — <code>index.html</code></p>
+          </span>
+          <svg class="page-panel-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="page-panel-body" id="panel-home-body">
 
-    <!-- Visibility Toggles -->
-    <section class="card">
-      <div class="card-head">
-        <h2>Section Visibility</h2>
-        <span class="hint">Show or hide page sections</span>
-      </div>
-      <div class="card-body">
-        <div class="toggle-row">
-          <div class="toggle-label">
-            Call-to-Action Banner
-            <small>Bottom CTA section on the homepage</small>
+          <div class="subcard">
+            <div class="subcard-head"><h3>Hero</h3><span class="hint">Top of the homepage</span></div>
+            <div class="field">
+              <label for="h-subheadline">Subheadline</label>
+              <textarea id="h-subheadline" placeholder="An intensive debate program for rising 6th–8th graders…"></textarea>
+            </div>
+            <div class="field">
+              <label for="h-contactEmail">Contact email</label>
+              <input type="email" id="h-contactEmail" placeholder="tigerdebatecamp@gmail.com" />
+              <p class="field-help">Used on the "Contact Us" button in the bottom CTA.</p>
+            </div>
           </div>
-          <label class="switch"><input type="checkbox" id="t-showCta" /><span class="slider"></span></label>
-        </div>
-        <div class="toggle-row">
-          <div class="toggle-label">
-            Announcement Banner
-            <small>Top announcement on homepage</small>
-          </div>
-          <label class="switch"><input type="checkbox" id="t-showAnnouncement2" /><span class="slider"></span></label>
-        </div>
-      </div>
-    </section>
 
-    <!-- Cloudflare Worker Config -->
-    <section class="card">
-      <div class="card-head">
-        <h2>Cloudflare Worker Config</h2>
-        <span class="hint">GitHub push settings — stored in your browser only</span>
-      </div>
-      <div class="card-body">
-        <div class="field">
-          <label for="cfg-workerUrl">Worker URL</label>
-          <input type="url" id="cfg-workerUrl" placeholder="https://tdc-admin.YOUR-SUBDOMAIN.workers.dev" />
-          <p class="field-help">The deployed Cloudflare Worker endpoint that accepts POST requests and pushes to GitHub.</p>
+          <div class="subcard">
+            <div class="subcard-head">
+              <h3>Announcement Banner</h3>
+              <label class="switch" title="Show on homepage">
+                <input type="checkbox" id="t-showAnnouncement" />
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="field">
+              <label for="a-badge">Badge</label>
+              <input type="text" id="a-badge" placeholder="2026 Enrollment" />
+            </div>
+            <div class="field">
+              <label for="a-title">Title</label>
+              <input type="text" id="a-title" placeholder="Applications Open — June 8–12" />
+            </div>
+            <div class="field">
+              <label for="a-body">Body</label>
+              <textarea id="a-body" placeholder="Short description…"></textarea>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="a-ctaText">CTA text</label>
+                <input type="text" id="a-ctaText" placeholder="Learn More" />
+              </div>
+              <div class="field">
+                <label for="a-ctaHref">CTA link</label>
+                <input type="text" id="a-ctaHref" placeholder="#section-program" />
+              </div>
+            </div>
+          </div>
+
+          <div class="subcard">
+            <div class="subcard-head">
+              <h3>Daily Schedule</h3>
+              <label class="switch" title="Show schedule section">
+                <input type="checkbox" id="t-showEvents" />
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="row-list" id="events-list"></div>
+            <div style="margin-top:.75rem;"><button type="button" class="btn btn-ghost btn-sm" id="add-event">+ Add event</button></div>
+          </div>
+
         </div>
-        <div class="field">
-          <label for="cfg-workerSecret">Worker Secret</label>
-          <input type="password" id="cfg-workerSecret" placeholder="Shared secret configured in your Worker" />
-          <p class="field-help">Matches the <code>ADMIN_SECRET</code> environment variable set in your Cloudflare Worker.</p>
+      </section>
+
+      <!-- ════════════ EDIT ABOUT PAGE ════════════ -->
+      <section class="page-panel" id="panel-about">
+        <button type="button" class="page-panel-head" aria-expanded="false" aria-controls="panel-about-body">
+          <span class="page-panel-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          </span>
+          <span class="page-panel-titles">
+            <h2>Edit About Page</h2>
+            <p>Hero, motto, founder bio, and Instagram link — <code>about.html</code></p>
+          </span>
+          <svg class="page-panel-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="page-panel-body" id="panel-about-body">
+
+          <div class="subcard">
+            <div class="subcard-head"><h3>Hero Section</h3><span class="hint">Top of the About page</span></div>
+            <div class="field-row">
+              <div class="field">
+                <label for="ab-heroEyebrow">Eyebrow</label>
+                <input type="text" id="ab-heroEyebrow" placeholder="About Us" />
+              </div>
+              <div class="field">
+                <label for="ab-heroHeading">Heading</label>
+                <input type="text" id="ab-heroHeading" placeholder="Built by Debaters, For Debaters" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="ab-heroBody">Body paragraph</label>
+              <textarea id="ab-heroBody" placeholder="Tiger Debate Camp was founded at Pensacola High School…"></textarea>
+            </div>
+          </div>
+
+          <div class="subcard">
+            <div class="subcard-head"><h3>Motto Strip</h3><span class="hint">The crimson banner below the hero</span></div>
+            <div class="field-row">
+              <div class="field">
+                <label for="ab-mottoText">Motto</label>
+                <input type="text" id="ab-mottoText" placeholder="&quot;In Utramque Partem&quot;" />
+              </div>
+              <div class="field">
+                <label for="ab-mottoSub">Subtitle</label>
+                <input type="text" id="ab-mottoSub" placeholder="On Both Sides · The motto of Tiger Debate Camp" />
+              </div>
+            </div>
+          </div>
+
+          <div class="subcard">
+            <div class="subcard-head"><h3>Founder</h3><span class="hint">The founder bio section</span></div>
+            <div class="field-row">
+              <div class="field">
+                <label for="ab-founderEyebrow">Eyebrow</label>
+                <input type="text" id="ab-founderEyebrow" placeholder="The Founder" />
+              </div>
+              <div class="field">
+                <label for="ab-founderHeading">Heading</label>
+                <input type="text" id="ab-founderHeading" placeholder="Meet Henry White" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="ab-founderName">Name</label>
+                <input type="text" id="ab-founderName" placeholder="Henry White" />
+                <p class="field-help">Also generates the avatar initials.</p>
+              </div>
+              <div class="field">
+                <label for="ab-founderRole">Role / tag</label>
+                <input type="text" id="ab-founderRole" placeholder="Founder &amp; Director · Pensacola High School" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="ab-founderBio1">Bio — paragraph 1</label>
+              <textarea id="ab-founderBio1" style="min-height:110px;" placeholder="Henry White is a competitive debater at Pensacola High School…"></textarea>
+            </div>
+            <div class="field">
+              <label for="ab-founderBio2">Bio — paragraph 2</label>
+              <textarea id="ab-founderBio2" placeholder="The camp is run out of Pensacola High School…"></textarea>
+            </div>
+          </div>
+
+          <div class="subcard">
+            <div class="subcard-head"><h3>Instagram</h3><span class="hint">Links on About and across the site</span></div>
+            <div class="field">
+              <label for="ab-instagramHandle">Instagram handle</label>
+              <input type="text" id="ab-instagramHandle" placeholder="tigerdebate" />
+              <p class="field-help">Handle only, no <code>@</code> or URL. Updates the nav link, footer link, and Follow button on the About page.</p>
+            </div>
+          </div>
+
         </div>
-        <button type="button" class="btn btn-navy btn-sm" id="save-config">Save Config</button>
-        <p class="field-help" style="margin-top:.5rem;">Config is saved to <code>localStorage</code> in your browser only — never sent to GitHub.</p>
-      </div>
-    </section>
+      </section>
+
+      <!-- ════════════ SITE-WIDE ════════════ -->
+      <section class="page-panel" id="panel-site">
+        <button type="button" class="page-panel-head" aria-expanded="false" aria-controls="panel-site-body">
+          <span class="page-panel-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93C7.05 19.44 4 16.08 4 12c0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41C17.92 5.77 20 8.65 20 12c0 2.08-.81 3.98-2.1 5.39z"/></svg>
+          </span>
+          <span class="page-panel-titles">
+            <h2>Site-wide</h2>
+            <p>Section visibility toggles and Cloudflare Worker config — every page</p>
+          </span>
+          <svg class="page-panel-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="page-panel-body" id="panel-site-body">
+
+          <div class="subcard">
+            <div class="subcard-head"><h3>Section Visibility</h3><span class="hint">Show or hide page sections</span></div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                Announcement Banner
+                <small>Top announcement on homepage</small>
+              </div>
+              <label class="switch"><input type="checkbox" id="t-showAnnouncement2" /><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                Daily Schedule
+                <small>Event list section on the homepage</small>
+              </div>
+              <label class="switch"><input type="checkbox" id="t-showEvents2" /><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                Call-to-Action Banner
+                <small>Bottom CTA section on the homepage</small>
+              </div>
+              <label class="switch"><input type="checkbox" id="t-showCta" /><span class="slider"></span></label>
+            </div>
+          </div>
+
+          <div class="subcard">
+            <div class="subcard-head"><h3>Cloudflare Worker Config</h3><span class="hint">GitHub push settings — stored in your browser only</span></div>
+            <div class="field">
+              <label for="cfg-workerUrl">Worker URL</label>
+              <input type="url" id="cfg-workerUrl" placeholder="https://tdc-admin.YOUR-SUBDOMAIN.workers.dev" />
+              <p class="field-help">The deployed Cloudflare Worker endpoint that accepts POST requests and pushes to GitHub.</p>
+            </div>
+            <div class="field">
+              <label for="cfg-workerSecret">Worker Secret</label>
+              <input type="password" id="cfg-workerSecret" placeholder="Shared secret configured in your Worker" />
+              <p class="field-help">Matches the <code>ADMIN_SECRET</code> environment variable set in your Cloudflare Worker.</p>
+            </div>
+            <button type="button" class="btn btn-navy btn-sm" id="save-config">Save Config</button>
+            <p class="field-help" style="margin-top:.5rem;">Config is saved to <code>localStorage</code> — never sent to GitHub.</p>
+          </div>
+
+        </div>
+      </section>
+
+    </div><!-- /page-accordion -->
   </main>
 
   <div class="save-bar">
@@ -604,72 +824,84 @@
   </div>
 
   <script>
-    // ── Config (stored in localStorage) ──────────────────────────────────────
-    const CFG_KEY = 'tdc_admin_config';
+    // ── Config ───────────────────────────────────────────────────────────────
+    const CFG_KEY      = 'tdc_admin_config';
     const CONTENT_PATH = 'src/data/content.json';
-    const REPO_BRANCH  = 'main';
 
     function loadConfig() {
       try { return JSON.parse(localStorage.getItem(CFG_KEY) || '{}'); } catch (_) { return {}; }
     }
     function saveConfig(cfg) { localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
 
-    // ── Content defaults ──────────────────────────────────────────────────────
+    // ── Content defaults ─────────────────────────────────────────────────────
     const CONTENT_DEFAULTS = {
       headline: 'Tiger Debate Camp',
       subheadline: 'An intensive debate program for rising 6th–8th graders, run out of Pensacola High School by the Pensacola High Debate Team.',
       contactEmail: 'tigerdebatecamp@gmail.com',
       announcement: { badge: '2026 Enrollment', title: '', body: '', ctaText: '', ctaHref: '' },
       events: [],
+      about: {
+        heroEyebrow: 'About Us',
+        heroHeading: 'Built by Debaters, For Debaters',
+        heroBody: 'Tiger Debate Camp was founded at Pensacola High School to give rising middle schoolers the same skills that high school debate competitors spend years developing — compressed into five powerful days.',
+        mottoText: '"In Utramque Partem"',
+        mottoSub: 'On Both Sides · The motto of Tiger Debate Camp',
+        founderEyebrow: 'The Founder',
+        founderHeading: 'Meet Henry White',
+        founderName: 'Henry White',
+        founderRole: 'Founder & Director · Pensacola High School',
+        founderBio1: 'Henry White is a competitive debater at Pensacola High School and the founder of Tiger Debate Camp. Drawing on his own experience in high school debate, Henry created the camp to open the world of structured argumentation to younger students. He designed the Tiger Debate Format to give beginners a competitive framework that is rigorous enough to teach real skills while accessible enough for first-time competitors.',
+        founderBio2: 'The camp is run out of Pensacola High School by the Pensacola High Debate Team, with the goal of growing a new generation of strong communicators and critical thinkers in the Pensacola community.',
+        instagramHandle: 'tigerdebate',
+      },
     };
     const THEME_DEFAULTS = { showEvents: true, showCta: true, showAnnouncement: true };
 
-    function $(id) { return document.getElementById(id); }
+    function $id(id) { return document.getElementById(id); }
 
     const state = {
       content: JSON.parse(JSON.stringify(CONTENT_DEFAULTS)),
       theme:   JSON.parse(JSON.stringify(THEME_DEFAULTS)),
     };
 
-    // ── Dirty tracking ────────────────────────────────────────────────────────
+    // ── Dirty tracking ───────────────────────────────────────────────────────
     function markDirty() {
-      $('save-status').textContent = 'Unsaved changes';
-      $('save-status').className = 'status dirty';
-      $('save-btn').disabled = false;
+      $id('save-status').textContent = 'Unsaved changes';
+      $id('save-status').className = 'status dirty';
+      $id('save-btn').disabled = false;
     }
     function markClean(msg) {
-      $('save-status').textContent = msg || 'Saved';
-      $('save-status').className = 'status ok';
-      $('save-btn').disabled = true;
+      $id('save-status').textContent = msg || 'Saved';
+      $id('save-status').className = 'status ok';
+      $id('save-btn').disabled = true;
     }
     function setSaving(on) {
-      $('save-btn').disabled = on;
-      $('save-btn-text').innerHTML = on
+      $id('save-btn').disabled = on;
+      $id('save-btn-text').innerHTML = on
         ? '<span class="spinner"></span> Pushing…'
         : 'Save &amp; Push to GitHub';
     }
 
-    // ── Alerts ────────────────────────────────────────────────────────────────
+    // ── Alerts ───────────────────────────────────────────────────────────────
     function showAlert(type, html) {
-      const el = $('alert');
+      const el = $id('alert');
       el.className = `alert ${type} show`;
       el.innerHTML = html;
       el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
     function clearAlert() {
-      const el = $('alert');
+      const el = $id('alert');
       el.className = 'alert';
       el.innerHTML = '';
     }
 
-    // ── Password gate ─────────────────────────────────────────────────────────
+    // ── Password gate ────────────────────────────────────────────────────────
     function handleGateSubmit() {
-      const input = $('gate-input');
-      const errEl = $('gate-error');
+      const input  = $id('gate-input');
+      const errEl  = $id('gate-error');
       const stored = loadConfig().adminPassword || '';
-      const val = input.value;
+      const val    = input.value;
       if (!stored) {
-        // First time — accept any non-empty password and store it
         if (!val.trim()) { errEl.textContent = 'Enter a password to set up admin access.'; errEl.className = 'gate-error show'; return; }
         const cfg = loadConfig();
         cfg.adminPassword = val;
@@ -682,44 +914,65 @@
     }
     function unlockAdmin() {
       document.body.classList.remove('locked');
-      $('admin-gate').remove();
+      $id('admin-gate').remove();
       initAdmin();
     }
 
-    // ── Load existing content from server ─────────────────────────────────────
+    // ── Load existing content from server ────────────────────────────────────
     async function fetchServerContent() {
       try {
         const res = await fetch(`src/data/content.json?_=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(4000) });
         if (res.ok) {
           const data = await res.json();
-          if (data?.content) Object.assign(state.content, data.content);
-          if (data?.theme)   Object.assign(state.theme,   data.theme);
+          if (data?.content) {
+            Object.assign(state.content, data.content);
+            if (data.content.about) state.content.about = Object.assign({}, CONTENT_DEFAULTS.about, data.content.about);
+          }
+          if (data?.theme) Object.assign(state.theme, data.theme);
         }
       } catch (_) {}
     }
 
-    // ── Render fields ─────────────────────────────────────────────────────────
-    function renderHeroFields() {
-      $('h-headline').value    = state.content.headline    || '';
-      $('h-subheadline').value = state.content.subheadline || '';
-      $('h-contactEmail').value = state.content.contactEmail || '';
-    }
-    function renderAnnouncementFields() {
+    // ── Render all fields ────────────────────────────────────────────────────
+    function renderHomeFields() {
+      $id('h-subheadline').value  = state.content.subheadline  || '';
+      $id('h-contactEmail').value = state.content.contactEmail || '';
       const a = state.content.announcement || {};
-      $('a-badge').value   = a.badge   || '';
-      $('a-title').value   = a.title   || '';
-      $('a-body').value    = a.body    || '';
-      $('a-ctaText').value = a.ctaText || '';
-      $('a-ctaHref').value = a.ctaHref || '';
+      $id('a-badge').value   = a.badge   || '';
+      $id('a-title').value   = a.title   || '';
+      $id('a-body').value    = a.body    || '';
+      $id('a-ctaText').value = a.ctaText || '';
+      $id('a-ctaHref').value = a.ctaHref || '';
     }
+
+    function renderAboutFields() {
+      const ab = state.content.about || {};
+      $id('ab-heroEyebrow').value    = ab.heroEyebrow    || '';
+      $id('ab-heroHeading').value    = ab.heroHeading    || '';
+      $id('ab-heroBody').value       = ab.heroBody       || '';
+      $id('ab-mottoText').value      = ab.mottoText      || '';
+      $id('ab-mottoSub').value       = ab.mottoSub       || '';
+      $id('ab-founderEyebrow').value = ab.founderEyebrow || '';
+      $id('ab-founderHeading').value = ab.founderHeading || '';
+      $id('ab-founderName').value    = ab.founderName    || '';
+      $id('ab-founderRole').value    = ab.founderRole    || '';
+      $id('ab-founderBio1').value    = ab.founderBio1    || '';
+      $id('ab-founderBio2').value    = ab.founderBio2    || '';
+      $id('ab-instagramHandle').value = ab.instagramHandle || '';
+    }
+
     function renderToggles() {
-      $('t-showAnnouncement').checked  = !!state.theme.showAnnouncement;
-      $('t-showAnnouncement2').checked = !!state.theme.showAnnouncement;
-      $('t-showEvents').checked        = !!state.theme.showEvents;
-      $('t-showCta').checked           = !!state.theme.showCta;
+      const showAnn  = !!state.theme.showAnnouncement;
+      const showEv   = !!state.theme.showEvents;
+      $id('t-showAnnouncement').checked  = showAnn;
+      $id('t-showAnnouncement2').checked = showAnn;
+      $id('t-showEvents').checked        = showEv;
+      $id('t-showEvents2').checked       = showEv;
+      $id('t-showCta').checked           = !!state.theme.showCta;
     }
+
     function renderEvents() {
-      const list = $('events-list');
+      const list = $id('events-list');
       list.innerHTML = '';
       if (!state.content.events.length) {
         list.innerHTML = `<div class="empty">No events yet. Click <strong>+ Add event</strong>.</div>`;
@@ -732,9 +985,9 @@
         row.dataset.idx = String(idx);
         row.innerHTML = `
           <div class="row-fields row-fields-3">
-            <input type="text" data-k="date"  placeholder="JUN 8"             value="${escAttr(ev.date  || '')}" />
-            <input type="text" data-k="title" placeholder="Event title"        value="${escAttr(ev.title || '')}" />
-            <input type="text" data-k="desc"  placeholder="Short description"  value="${escAttr(ev.desc  || '')}" />
+            <input type="text" data-k="date"  placeholder="JUN 8"            value="${escAttr(ev.date  || '')}" />
+            <input type="text" data-k="title" placeholder="Event title"       value="${escAttr(ev.title || '')}" />
+            <input type="text" data-k="desc"  placeholder="Short description" value="${escAttr(ev.desc  || '')}" />
           </div>
           <div class="row-actions">
             <div class="reorder">
@@ -755,135 +1008,206 @@
       [arr[i], arr[j]] = [arr[j], arr[i]]; return true;
     }
 
-    // ── Worker push ───────────────────────────────────────────────────────────
-    function b64encode(str) {
-      return btoa(unescape(encodeURIComponent(str)));
-    }
+    // ── Worker push ──────────────────────────────────────────────────────────
+    function b64encode(str) { return btoa(unescape(encodeURIComponent(str))); }
 
     async function workerPush(path, base64Content, message) {
       const cfg = loadConfig();
-      if (!cfg.workerUrl) throw new Error('Worker URL not configured. Set it in the Cloudflare Worker Config section below.');
+      if (!cfg.workerUrl || !cfg.workerSecret) {
+        throw new Error('Cloudflare Worker not configured. Open Site-wide → Worker Config and save your Worker URL and secret.');
+      }
       const res = await fetch(cfg.workerUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Admin-Secret': cfg.workerSecret || '',
-        },
-        body: JSON.stringify({ path, content: base64Content, message, branch: REPO_BRANCH }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ secret: cfg.workerSecret, path, content: base64Content, message }),
       });
       if (!res.ok) {
-        const body = await res.text().catch(() => '');
-        throw new Error(`Worker returned ${res.status}: ${body || res.statusText}`);
+        const txt = await res.text().catch(() => '');
+        throw new Error(`Worker returned ${res.status}: ${txt.slice(0, 120)}`);
       }
+      return res.json().catch(() => ({}));
     }
 
-    // ── Wire fields ───────────────────────────────────────────────────────────
-    function wireHero() {
-      const map = { 'h-headline':'headline', 'h-subheadline':'subheadline', 'h-contactEmail':'contactEmail' };
-      Object.entries(map).forEach(([id, key]) => {
-        $(id).addEventListener('input', (e) => { state.content[key] = e.target.value; markDirty(); });
-      });
-    }
-    function wireAnnouncement() {
-      const map = { 'a-badge':'badge', 'a-title':'title', 'a-body':'body', 'a-ctaText':'ctaText', 'a-ctaHref':'ctaHref' };
-      Object.entries(map).forEach(([id, key]) => {
-        $(id).addEventListener('input', (e) => { state.content.announcement[key] = e.target.value; markDirty(); });
-      });
-    }
-    function wireToggles() {
-      const map = {
-        't-showAnnouncement': 'showAnnouncement',
-        't-showAnnouncement2': 'showAnnouncement',
-        't-showEvents': 'showEvents',
-        't-showCta': 'showCta',
+    // ── Read fields into state ───────────────────────────────────────────────
+    function collectState() {
+      state.content.subheadline  = $id('h-subheadline').value.trim();
+      state.content.contactEmail = $id('h-contactEmail').value.trim();
+      state.content.announcement = {
+        badge:   $id('a-badge').value.trim(),
+        title:   $id('a-title').value.trim(),
+        body:    $id('a-body').value.trim(),
+        ctaText: $id('a-ctaText').value.trim(),
+        ctaHref: $id('a-ctaHref').value.trim(),
       };
-      Object.entries(map).forEach(([id, key]) => {
-        $(id).addEventListener('change', (e) => { state.theme[key] = e.target.checked; markDirty(); });
-      });
-    }
-    function wireEventsList() {
-      const list = $('events-list');
-      list.addEventListener('input', (e) => {
-        const row = e.target.closest('.row-item'); if (!row) return;
-        const idx = Number(row.dataset.idx);
-        const key = e.target.dataset.k;
-        if (key && state.content.events[idx]) { state.content.events[idx][key] = e.target.value; markDirty(); }
-      });
-      list.addEventListener('click', (e) => {
-        const row = e.target.closest('.row-item'); if (!row) return;
-        const idx = Number(row.dataset.idx);
-        if (e.target.matches('[data-remove]')) {
-          if (confirm(`Remove "${state.content.events[idx]?.title || 'this event'}"?`)) {
-            state.content.events.splice(idx, 1); markDirty(); renderEvents();
-          }
-        } else if (e.target.matches('[data-move]')) {
-          const dir = e.target.dataset.move === 'up' ? -1 : 1;
-          if (swap(state.content.events, idx, idx + dir)) { markDirty(); renderEvents(); }
-        }
-      });
-      $('add-event').addEventListener('click', () => {
-        state.content.events.push({ date: '', title: '', desc: '' }); markDirty(); renderEvents();
-        const rows = list.querySelectorAll('.row-item');
-        rows[rows.length - 1]?.querySelector('input[data-k="date"]')?.focus();
-      });
-    }
-    function wireConfig() {
-      const cfg = loadConfig();
-      $('cfg-workerUrl').value    = cfg.workerUrl    || '';
-      $('cfg-workerSecret').value = cfg.workerSecret || '';
-      $('save-config').addEventListener('click', () => {
-        const c = loadConfig();
-        c.workerUrl    = $('cfg-workerUrl').value.trim();
-        c.workerSecret = $('cfg-workerSecret').value.trim();
-        saveConfig(c);
-        showAlert('success', 'Worker config saved to browser storage.');
-      });
+      // Events from DOM
+      const rows = $id('events-list').querySelectorAll('.row-item[data-idx]');
+      state.content.events = Array.from(rows).map(row => ({
+        date:  row.querySelector('[data-k="date"]').value.trim(),
+        title: row.querySelector('[data-k="title"]').value.trim(),
+        desc:  row.querySelector('[data-k="desc"]').value.trim(),
+      }));
+      // About
+      state.content.about = {
+        heroEyebrow:    $id('ab-heroEyebrow').value.trim(),
+        heroHeading:    $id('ab-heroHeading').value.trim(),
+        heroBody:       $id('ab-heroBody').value.trim(),
+        mottoText:      $id('ab-mottoText').value.trim(),
+        mottoSub:       $id('ab-mottoSub').value.trim(),
+        founderEyebrow: $id('ab-founderEyebrow').value.trim(),
+        founderHeading: $id('ab-founderHeading').value.trim(),
+        founderName:    $id('ab-founderName').value.trim(),
+        founderRole:    $id('ab-founderRole').value.trim(),
+        founderBio1:    $id('ab-founderBio1').value.trim(),
+        founderBio2:    $id('ab-founderBio2').value.trim(),
+        instagramHandle: $id('ab-instagramHandle').value.trim(),
+      };
+      // Toggles (use the homepage-panel toggles as primary)
+      state.theme.showAnnouncement = $id('t-showAnnouncement').checked;
+      state.theme.showEvents       = $id('t-showEvents').checked;
+      state.theme.showCta          = $id('t-showCta').checked;
     }
 
-    async function saveAll() {
+    // ── Save & push ──────────────────────────────────────────────────────────
+    async function handleSave() {
+      collectState();
       clearAlert();
-      state.content.events = state.content.events.filter(e => e.date || e.title || e.desc);
-      const payload = JSON.stringify({ content: state.content, theme: state.theme }, null, 2) + '\n';
-      const base64  = b64encode(payload);
-      const message = `chore(admin): update site content (${new Date().toISOString().slice(0,10)})`;
       setSaving(true);
       try {
-        await workerPush(CONTENT_PATH, base64, message);
-        markClean('Saved. GitHub Pages rebuilding…');
-        showAlert('success', `Pushed <code>${CONTENT_PATH}</code> to <strong>${REPO_BRANCH}</strong>. Live site updates in ~1 minute.`);
-        renderEvents();
+        const payload = JSON.stringify({ content: state.content, theme: state.theme }, null, 2);
+        await workerPush(CONTENT_PATH, b64encode(payload), 'chore: update site content via admin');
+        markClean('Pushed — live in ~1 min');
+        showAlert('success', '✓ Content pushed to GitHub. The site will update in about a minute.');
       } catch (err) {
-        console.error(err);
-        $('save-status').textContent = 'Save failed';
-        $('save-status').className = 'status err';
-        showAlert('error', `Save failed: ${err.message}`);
-      } finally {
         setSaving(false);
+        $id('save-status').textContent = 'Push failed';
+        $id('save-status').className = 'status err';
+        showAlert('error', `Push failed: ${err.message}`);
       }
     }
 
-    async function initAdmin() {
-      await fetchServerContent();
-      renderHeroFields();
-      renderAnnouncementFields();
-      renderToggles();
-      renderEvents();
-      wireHero();
-      wireAnnouncement();
-      wireToggles();
-      wireEventsList();
-      wireConfig();
-      $('save-btn').addEventListener('click', saveAll);
+    // ── Wire up page-tab accordion ───────────────────────────────────────────
+    function initAccordion() {
+      document.getElementById('page-accordion').addEventListener('click', e => {
+        const head = e.target.closest('.page-panel-head');
+        if (!head) return;
+        const panel = head.closest('.page-panel');
+        const isOpen = panel.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.page-panel').forEach(p => {
+          p.classList.remove('open');
+          p.querySelector('.page-panel-head').setAttribute('aria-expanded', 'false');
+        });
+        // Open clicked if it was closed
+        if (!isOpen) {
+          panel.classList.add('open');
+          head.setAttribute('aria-expanded', 'true');
+          panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+
+      document.getElementById('page-tabs').addEventListener('click', e => {
+        const btn = e.target.closest('.page-tab');
+        if (!btn) return;
+        const targetId = btn.dataset.tab;
+        // Update active tab
+        document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        // Open the matching panel, close others
+        document.querySelectorAll('.page-panel').forEach(p => {
+          const isTarget = p.id === targetId;
+          p.classList.toggle('open', isTarget);
+          p.querySelector('.page-panel-head').setAttribute('aria-expanded', String(isTarget));
+        });
+        const target = document.getElementById(targetId);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     }
 
-    // ── Boot gate ─────────────────────────────────────────────────────────────
-    document.addEventListener('DOMContentLoaded', () => {
-      const gateInput  = $('gate-input');
-      const gateSubmit = $('gate-submit');
-      gateSubmit.addEventListener('click', handleGateSubmit);
-      gateInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleGateSubmit(); });
-      gateInput.focus();
-    });
+    // ── Wire up events list ──────────────────────────────────────────────────
+    function initEventsList() {
+      $id('add-event').addEventListener('click', () => {
+        state.content.events.push({ date: '', title: '', desc: '' });
+        renderEvents();
+        markDirty();
+      });
+
+      $id('events-list').addEventListener('click', e => {
+        const row = e.target.closest('.row-item[data-idx]');
+        if (!row) return;
+        const idx = parseInt(row.dataset.idx, 10);
+        if (e.target.closest('[data-remove]')) {
+          state.content.events.splice(idx, 1);
+          renderEvents(); markDirty(); return;
+        }
+        const moveBtn = e.target.closest('[data-move]');
+        if (moveBtn) {
+          const dir = moveBtn.dataset.move;
+          if (swap(state.content.events, idx, dir === 'up' ? idx - 1 : idx + 1)) {
+            renderEvents(); markDirty();
+          }
+        }
+      });
+
+      $id('events-list').addEventListener('input', e => {
+        const row = e.target.closest('.row-item[data-idx]');
+        if (!row) return;
+        const idx = parseInt(row.dataset.idx, 10);
+        const k   = e.target.dataset.k;
+        if (k) { state.content.events[idx][k] = e.target.value; markDirty(); }
+      });
+    }
+
+    // ── Sync paired toggles ──────────────────────────────────────────────────
+    function syncTogglePair(id1, id2) {
+      $id(id1).addEventListener('change', () => { $id(id2).checked = $id(id1).checked; markDirty(); });
+      $id(id2).addEventListener('change', () => { $id(id1).checked = $id(id2).checked; markDirty(); });
+    }
+
+    // ── Init ─────────────────────────────────────────────────────────────────
+    async function initAdmin() {
+      await fetchServerContent();
+      renderHomeFields();
+      renderAboutFields();
+      renderToggles();
+      renderEvents();
+      initAccordion();
+      initEventsList();
+
+      // Sync the two announcement toggles (Home panel + Site-wide panel)
+      syncTogglePair('t-showAnnouncement', 't-showAnnouncement2');
+      // Sync the two events toggles
+      syncTogglePair('t-showEvents', 't-showEvents2');
+
+      // Generic dirty listeners on all inputs/textareas
+      document.querySelectorAll('.admin-page input:not([type="password"]), .admin-page textarea').forEach(el => {
+        el.addEventListener('input', markDirty);
+        el.addEventListener('change', markDirty);
+      });
+
+      // Standalone toggle: CTA
+      $id('t-showCta').addEventListener('change', markDirty);
+
+      // Save button
+      $id('save-btn').addEventListener('click', handleSave);
+
+      // Config save
+      $id('save-config').addEventListener('click', () => {
+        const cfg = loadConfig();
+        cfg.workerUrl    = $id('cfg-workerUrl').value.trim();
+        cfg.workerSecret = $id('cfg-workerSecret').value.trim();
+        saveConfig(cfg);
+        showAlert('success', '✓ Worker config saved to your browser.');
+      });
+
+      // Pre-fill config inputs from localStorage
+      const cfg = loadConfig();
+      if (cfg.workerUrl)    $id('cfg-workerUrl').value    = cfg.workerUrl;
+      if (cfg.workerSecret) $id('cfg-workerSecret').value = cfg.workerSecret;
+    }
+
+    // ── Gate events ──────────────────────────────────────────────────────────
+    $id('gate-submit').addEventListener('click', handleGateSubmit);
+    $id('gate-input').addEventListener('keydown', e => { if (e.key === 'Enter') handleGateSubmit(); });
   </script>
 </body>
 </html>
