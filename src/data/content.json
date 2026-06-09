@@ -1,4 +1,28 @@
 {
-  "content": {},
-  "theme": {}
+  "content": {
+    "headline": "Tiger Debate Camp",
+    "subheadline": "An intensive debate program for rising 6th–8th graders, run out of Pensacola High School by the Pensacola High Debate Team.",
+    "contactEmail": "tigerdebatecamp@gmail.com",
+    "announcement": { "badge": "2026 Enrollment", "title": "", "body": "", "ctaText": "", "ctaHref": "" },
+    "events": [],
+    "about": {
+      "heroEyebrow": "About Us",
+      "heroHeading": "Built by Debaters, For Debaters",
+      "heroBody": "Tiger Debate Camp was founded at Pensacola High School to give rising middle schoolers the same skills that high school debate competitors spend years developing — compressed into five powerful days.",
+      "mottoText": "\"In Utramque Partem\"",
+      "mottoSub": "On Both Sides · The motto of Tiger Debate Camp",
+      "founderEyebrow": "The Founder",
+      "founderHeading": "Meet Henry White",
+      "founderName": "Henry White",
+      "founderRole": "Founder & Director · Pensacola High School",
+      "founderBio1": "Henry White is a competitive debater at Pensacola High School and the founder of Tiger Debate Camp. Drawing on his own experience in high school debate, Henry created the camp to open the world of structured argumentation to younger students. He designed the Tiger Debate Format to give beginners a competitive framework that is rigorous enough to teach real skills while accessible enough for first-time competitors.",
+      "founderBio2": "The camp is run out of Pensacola High School by the Pensacola High Debate Team, with the goal of growing a new generation of strong communicators and critical thinkers in the Pensacola community.",
+      "instagramHandle": "tigerdebate"
+    }
+  },
+  "theme": {
+    "showEvents": true,
+    "showCta": true,
+    "showAnnouncement": true
+  }
 }
