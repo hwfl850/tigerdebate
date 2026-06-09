@@ -40,7 +40,7 @@
   <img class="footer-logo" src="Media/favicon-tdc.png" alt="Tiger Debate Camp" />
   <div style="font-weight:600;color:#fff;font-size:.95rem;">Pensacola High School <span style="opacity:.45;margin:0 .35rem;">·</span> Pensacola, FL</div>
   <div class="footer-divider" aria-hidden="true"></div>
-  <a class="insta-link" href="https://www.instagram.com/tigerdebate" target="_blank" rel="noopener" aria-label="Follow us on Instagram">
+  <a class="insta-link" id="footer-insta" href="https://www.instagram.com/tigerdebate" target="_blank" rel="noopener" aria-label="Follow us on Instagram">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
     </svg>
@@ -54,39 +54,46 @@
 <script>
 function onSiteReady() {
   const main = document.getElementById('main-content');
+  const c = currentContent();
+  const ab = c.about || {};
+
+  const instagramHandle = ab.instagramHandle || 'tigerdebate';
+  const instagramUrl = 'https://www.instagram.com/' + instagramHandle;
+
+  // Update nav Instagram link dynamically
+  const navInsta = document.querySelector('nav a.nav-accent');
+  if (navInsta) navInsta.href = instagramUrl;
+
+  // Update footer Instagram link dynamically
+  const footerInsta = document.getElementById('footer-insta');
+  if (footerInsta) footerInsta.href = instagramUrl;
 
   main.innerHTML = `
     <div class="hero" style="padding:4rem 1.5rem 3.5rem;">
       <div class="hero-content">
-        <div class="hero-eyebrow">About Us</div>
-        <h1>Built by Debaters, <span>For Debaters</span></h1>
-        <p>Tiger Debate Camp was founded at Pensacola High School to give rising middle schoolers the same skills that high school debate competitors spend years developing — compressed into five powerful days.</p>
+        <div class="hero-eyebrow">${escHtml(ab.heroEyebrow || 'About Us')}</div>
+        <h1>${escHtml(ab.heroHeading || 'Built by Debaters, For Debaters')}</h1>
+        <p>${escHtml(ab.heroBody || 'Tiger Debate Camp was founded at Pensacola High School to give rising middle schoolers the same skills that high school debate competitors spend years developing — compressed into five powerful days.')}</p>
       </div>
     </div>
 
     <div class="mission-strip">
-      <div class="motto">"In Utramque Partem"</div>
-      <div class="motto-latin">On Both Sides · The motto of Tiger Debate Camp</div>
+      <div class="motto">${escHtml(ab.mottoText || '"In Utramque Partem"')}</div>
+      <div class="motto-latin">${escHtml(ab.mottoSub || 'On Both Sides · The motto of Tiger Debate Camp')}</div>
     </div>
 
     <section class="section">
       <div class="section-inner">
-        <div class="section-eyebrow">The Founder</div>
-        <h2 class="section-title">Meet Henry White</h2>
+        <div class="section-eyebrow">${escHtml(ab.founderEyebrow || 'The Founder')}</div>
+        <h2 class="section-title">${escHtml(ab.founderHeading || 'Meet Henry White')}</h2>
         <div class="section-line"></div>
         <div class="about-founder">
-          <div class="about-founder-avatar">HW</div>
+          <div class="about-founder-avatar">${escHtml((ab.founderName || 'Henry White').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase())}</div>
           <div class="about-founder-info">
-            <h3>Henry White</h3>
-            <div class="role-tag">Founder &amp; Director · Pensacola High School</div>
-            <p>
-              Henry White is a competitive debater at Pensacola High School and the founder of Tiger Debate Camp.
-              Drawing on his own experience in high school debate, Henry created the camp to open the world of structured argumentation to younger students.
-              He designed the Tiger Debate Format to give beginners a competitive framework that is rigorous enough to teach real skills while accessible enough for first-time competitors.
-            </p>
-            <p style="margin-top:.85rem;">
-              The camp is run out of Pensacola High School by the Pensacola High Debate Team, with the goal of growing a new generation of strong communicators and critical thinkers in the Pensacola community.
-            </p>
+            <h3>${escHtml(ab.founderName || 'Henry White')}</h3>
+            <div class="role-tag">${escHtml(ab.founderRole || 'Founder &amp; Director · Pensacola High School')}</div>
+            <p>${escHtml(ab.founderBio1 || 'Henry White is a competitive debater at Pensacola High School and the founder of Tiger Debate Camp. Drawing on his own experience in high school debate, Henry created the camp to open the world of structured argumentation to younger students. He designed the Tiger Debate Format to give beginners a competitive framework that is rigorous enough to teach real skills while accessible enough for first-time competitors.')}</p>
+            ${ab.founderBio2 ? `<p style="margin-top:.85rem;">${escHtml(ab.founderBio2)}</p>` : ''}
           </div>
         </div>
       </div>
@@ -131,7 +138,7 @@ function onSiteReady() {
         <p style="color:var(--text-muted);max-width:520px;margin:0 auto 1.75rem;line-height:1.7;">
           Stay up to date with Tiger Debate Camp news, event announcements, and results by following us on Instagram.
         </p>
-        <a class="btn btn-primary" href="https://www.instagram.com/tigerdebate" target="_blank" rel="noopener">
+        <a class="btn btn-primary" href="${escHtml(instagramUrl)}" target="_blank" rel="noopener">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
           </svg>
